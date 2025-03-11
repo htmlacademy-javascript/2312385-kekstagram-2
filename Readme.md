@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм»
 
 * Студент: [Артём Корякин](https://up.htmlacademy.ru/javascript-individual/2/user/2312385).
-* Наставник: `Неизвестно`.
+* Наставник: [Виктория Никитина](https://github.com/vikitina).
 
 ---
 
