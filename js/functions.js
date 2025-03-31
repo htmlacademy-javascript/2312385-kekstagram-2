@@ -71,3 +71,26 @@ getNumbet('агент 007');
 getNumbet(2023);
 getNumbet(-1);
 getNumbet(1.5);
+
+
+// Делу - время
+
+const getNumber = (arr) => {
+  const [hours, minutes] = arr.split(':').map((item) => Number(item));
+  return hours * 60 + minutes;
+};
+
+const businessTime = (startWork, endWork, startTime, duration) => {
+  const startWorkArray = getNumber(startWork);
+  const endWorkArray = getNumber(endWork);
+  const startTimeArray = getNumber(startTime);
+  const endTimeArray = startTimeArray + duration;
+
+  return startWorkArray <= startTimeArray && endWorkArray >= endTimeArray;
+};
+
+console.log(businessTime('08:00', '17:30', '14:00', 90));
+console.log(businessTime('8:0', '10:0', '8:0', 120));
+console.log(businessTime('08:00', '14:30', '14:00', 90));
+console.log(businessTime('14:00', '17:30', '08:0', 90));
+console.log(businessTime('8:00', '17:30', '08:00', 900));
