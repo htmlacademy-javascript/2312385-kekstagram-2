@@ -1,26 +1,18 @@
-import { creatRandomId, getArrayElement } from './util';
-import { DESCRIPTIONS, NAMES } from './data';
-import { createMessage } from './create-messages';
+import { PHOTO_COUNT, COMMENTS_COUNT, createRandomUniqueNumber, getArrayElement, getRandomNumber } from './util';
+import { DESCRIPTIONS } from './data';
+import { createComment } from './create-comment';
 
-const PHOTO_COUNR = 25;
-
-const photoId = creatRandomId(1, PHOTO_COUNR);
-const photoUrl = creatRandomId(1, PHOTO_COUNR);
-const commentId = creatRandomId(1, PHOTO_COUNR);
-const avatarUrl = creatRandomId(1, 6);
+const photoId = createRandomUniqueNumber(1, PHOTO_COUNT);
+const photoUrl = createRandomUniqueNumber(1, PHOTO_COUNT);
 
 const createPhoto = () => ({
   id: photoId(),
-  url: `photo/${photoUrl()}.png`,
+  url: `photos/${photoUrl()}.jpg`,
   description: getArrayElement(DESCRIPTIONS),
-  comments: {
-    id: commentId(),
-    avatar: `img/avatar-${avatarUrl()}.png`,
-    message: createMessage(),
-    name: getArrayElement(NAMES),
-  },
+  likes: getRandomNumber(15, 200),
+  comments: Array.from({length:getRandomNumber(0, COMMENTS_COUNT)}, createComment),
 });
 
-const createPhotos = () => Array.from({length: PHOTO_COUNR}, createPhoto);
+const createPhotos = () => Array.from({length: PHOTO_COUNT}, createPhoto);
 
 export {createPhotos};

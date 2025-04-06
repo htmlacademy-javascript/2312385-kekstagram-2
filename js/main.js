@@ -1,3 +1,4 @@
-import { createPhotos } from './create-photos';
+import { renderPhotos } from './render-photos';
 
-console.log(createPhotos());
+renderPhotos();
+
