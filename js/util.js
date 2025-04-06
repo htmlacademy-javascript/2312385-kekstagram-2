@@ -1,3 +1,6 @@
+const PHOTO_COUNT = 25;
+const COMMENTS_COUNT = 30;
+
 const getRandomNumber = (a, b) => {
   const min = Math.min(Math.abs(a), Math.abs(b));
   const max = Math.max(Math.abs(a), Math.abs(b));
@@ -6,7 +9,7 @@ const getRandomNumber = (a, b) => {
   return Math.floor(result);
 };
 
-const creatRandomId = (a, b) => {
+const createRandomUniqueNumber = (a, b) => {
   const previousValues = [];
 
   return function () {
@@ -27,4 +30,4 @@ const creatRandomId = (a, b) => {
 
 const getArrayElement = (element) => element[getRandomNumber(0, element.length - 1)];
 
-export {getRandomNumber, creatRandomId, getArrayElement};
+export {PHOTO_COUNT, COMMENTS_COUNT, getRandomNumber, createRandomUniqueNumber, getArrayElement};
