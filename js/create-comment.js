@@ -1,14 +1,11 @@
-import { COMMENTS_COUNT, getRandomNumber, createRandomUniqueNumber, getArrayElement } from './util';
+import { getRandomNumber, getArrayElement } from './util';
 import { NAMES, COMMENTS } from './data';
-
-const commentId = createRandomUniqueNumber(1, COMMENTS_COUNT);
-const avatarUrl = createRandomUniqueNumber(1, 6);
 
 const createMessage = () => Array.from({length: getRandomNumber(1, 2)}, () => getArrayElement(COMMENTS)).join(' ');
 
-const createComment = () => ({
-  id: commentId(),
-  avatar: `img/avatar-${avatarUrl()}.png`,
+const createComment = (index) => ({
+  id: index,
+  avatar: `img/avatar-${getRandomNumber(1, 6)}.svg`,
   message: createMessage(),
   name: getArrayElement(NAMES),
 });
