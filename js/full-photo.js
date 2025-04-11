@@ -1,6 +1,5 @@
 import { isEsc } from './util';
 import { renderComments, resetCommentsCounter } from './render-comments';
-import { photos } from './render-photos';
 
 const body = document.querySelector('body');
 const bigPicture = document.querySelector('.big-picture');
@@ -32,12 +31,10 @@ function onEscKeyClick (evt) {
   }
 }
 
-const openFullPicture = (id) => {
-  const currentPhoto = photos.find((photo) => photo.id === Number(id));
-
+const openFullPicture = (picture) => {
   body.classList.add('modal-open');
   bigPicture.classList.remove('hidden');
-  renderData(currentPhoto);
+  renderData(picture);
   document.addEventListener('keydown', onEscKeyClick);
 };
 

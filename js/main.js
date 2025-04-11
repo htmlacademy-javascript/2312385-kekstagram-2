@@ -1,4 +1,7 @@
+import { createPhotos } from './create-photos';
 import { renderPhotos } from './render-photos';
 
-renderPhotos();
+const photos = createPhotos();
+
+renderPhotos(photos);
 
