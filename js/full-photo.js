@@ -1,8 +1,7 @@
 import { isEsc } from './util';
 import { renderComments, resetCommentsCounter } from './render-comments';
-import { photos } from './render-photos';
 
-const body = document.querySelector('body');
+const body = document.body;
 const bigPicture = document.querySelector('.big-picture');
 const bigPictureImg = bigPicture.querySelector('.big-picture__img img');
 const bigPictureLikes = bigPicture.querySelector('.likes-count');
@@ -17,6 +16,7 @@ const renderData = (picture) => {
 };
 
 const closeFullPicture = () => {
+  body.classList.remove('modal-open');
   bigPicture.classList.add('hidden');
   document.removeEventListener('keydown', onEscKeyClick);
   resetCommentsCounter();
@@ -32,12 +32,10 @@ function onEscKeyClick (evt) {
   }
 }
 
-const openFullPicture = (id) => {
-  const currentPhoto = photos.find((photo) => photo.id === Number(id));
-
+const openFullPicture = (picture) => {
   body.classList.add('modal-open');
   bigPicture.classList.remove('hidden');
-  renderData(currentPhoto);
+  renderData(picture);
   document.addEventListener('keydown', onEscKeyClick);
 };
 
