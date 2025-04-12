@@ -1,3 +1,4 @@
+// import { showModal } from './form';
 import { openFullPicture } from './full-photo';
 
 const photoContainer = document.querySelector('.pictures');
@@ -23,14 +24,13 @@ const renderPhotos = (photos) => {
 };
 
 photoContainer.addEventListener('click', (evt) => {
-  evt.preventDefault();
   const currentElement = evt.target.closest('.picture');
   if (currentElement) {
+    evt.preventDefault();
     const id = Number(currentElement.dataset.pictureId);
     const currentPicture = pictures.find((item) => item.id === id);
     openFullPicture(currentPicture);
   }
-
 });
 
 export {renderPhotos};

@@ -1,7 +1,7 @@
 import { isEsc } from './util';
 import { renderComments, resetCommentsCounter } from './render-comments';
 
-const body = document.querySelector('body');
+const body = document.body;
 const bigPicture = document.querySelector('.big-picture');
 const bigPictureImg = bigPicture.querySelector('.big-picture__img img');
 const bigPictureLikes = bigPicture.querySelector('.likes-count');
@@ -16,6 +16,7 @@ const renderData = (picture) => {
 };
 
 const closeFullPicture = () => {
+  body.classList.remove('modal-open');
   bigPicture.classList.add('hidden');
   document.removeEventListener('keydown', onEscKeyClick);
   resetCommentsCounter();
