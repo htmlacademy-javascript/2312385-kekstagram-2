@@ -1,5 +1,7 @@
-import { isValid } from './validate-form';
-import {isEsc} from './util.js';
+import { isValid, resetPristine } from './validate-form.js';
+import { isEsc } from './util.js';
+import { onFormChange, resetEffect } from './effect.js';
+import { resetScale } from './scale.js';
 
 const body = document.body;
 const form = document.querySelector('.img-upload__form');
@@ -8,6 +10,7 @@ const formModal = form.querySelector('.img-upload__overlay');
 const hashtagField = form.querySelector('.text__hashtags');
 const descriptionField = form.querySelector('.text__description');
 const photoPreview = form.querySelector('.img-upload__preview img');
+const effectsPreview = form .querySelectorAll('.effects__preview');
 const closeFormButton = form.querySelector('.img-upload__cancel');
 
 form.addEventListener('submit', (evt) => {
@@ -25,11 +28,14 @@ const isTextFieldFocused = () =>
 
 
 const closeModal = () => {
+  form.reset();
+  resetEffect();
+  resetScale();
+  resetPristine();
   body.classList.remove('modal-open');
   formModal.classList.add('hidden');
   closeFormButton.removeEventListener('click', closeModal);
   document.removeEventListener('keydown', onEscKeyClick);
-  form.reset();
 };
 
 function onEscKeyClick (evt) {
@@ -48,7 +54,14 @@ const showModal = () => {
     document.addEventListener('keydown', onEscKeyClick);
 
     photoPreview.src = URL.createObjectURL(file);
+
+    effectsPreview.forEach((effect) => {
+      effect.style.backgroundImage = `url('${photoPreview.src}')`;
+    });
   });
 };
+
+form.addEventListener('change', onFormChange);
+
 
 export {showModal};

@@ -62,4 +62,8 @@ pristine.addValidator(
   `Ваш коментарий должен быть не длинее ${MAX_DESCRIPTION} символов`
 );
 
-export const isValid = () => pristine.validate();
+const isValid = () => pristine.validate();
+
+const resetPristine = () => pristine.reset();
+
+export {isValid, resetPristine};
