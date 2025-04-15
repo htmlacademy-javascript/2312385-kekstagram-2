@@ -32,4 +32,11 @@ const getArrayElement = (element) => element[getRandomNumber(0, element.length -
 
 const isEsc = (key) => key === 'Escape';
 
-export {PHOTO_COUNT, COMMENTS_COUNT, getRandomNumber, createRandomUniqueNumber, getArrayElement, isEsc};
+export {
+  PHOTO_COUNT,
+  COMMENTS_COUNT,
+  getRandomNumber,
+  createRandomUniqueNumber,
+  getArrayElement,
+  isEsc
+};
