@@ -13,15 +13,6 @@ const photoPreview = form.querySelector('.img-upload__preview img');
 const effectsPreview = form .querySelectorAll('.effects__preview');
 const closeFormButton = form.querySelector('.img-upload__cancel');
 
-form.addEventListener('submit', (evt) => {
-  evt.preventDefault();
-  if (isValid()) {
-    form.submit();
-  } else {
-    console.log('форма не валидна');
-  }
-});
-
 const isTextFieldFocused = () =>
   document.activeElement === hashtagField ||
   document.activeElement === descriptionField;
@@ -61,7 +52,17 @@ const showModal = () => {
   });
 };
 
+const onSubmitForm = (cb) => {
+  form.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+    if (isValid()) {
+      const data = new FormData(evt.target);
+      cb(data);
+    }
+  });
+};
+
 form.addEventListener('change', onFormChange);
 
 
-export {showModal};
+export { showModal, closeModal, onSubmitForm };
