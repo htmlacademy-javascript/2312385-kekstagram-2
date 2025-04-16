@@ -1,4 +1,3 @@
-// import { showModal } from './form';
 import { openFullPicture } from './full-photo';
 
 const photoContainer = document.querySelector('.pictures');
@@ -8,6 +7,7 @@ const photosFragment = document.createDocumentFragment();
 let pictures = [];
 
 const renderPhotos = (photos) => {
+  photoContainer.querySelectorAll('.picture').forEach((photo) => photo.remove());
   pictures = [...photos];
   pictures.forEach((picture) => {
     const photoElement = photoTemplate.cloneNode(true);
