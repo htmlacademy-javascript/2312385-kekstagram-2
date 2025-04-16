@@ -32,11 +32,20 @@ const getArrayElement = (element) => element[getRandomNumber(0, element.length -
 
 const isEsc = (key) => key === 'Escape';
 
+const debounce = (cb, delay = 500) => {
+  let timeoutId;
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => cb.apply(this, rest), delay);
+  };
+};
+
 export {
   PHOTO_COUNT,
   COMMENTS_COUNT,
   getRandomNumber,
   createRandomUniqueNumber,
   getArrayElement,
-  isEsc
+  isEsc,
+  debounce,
 };
