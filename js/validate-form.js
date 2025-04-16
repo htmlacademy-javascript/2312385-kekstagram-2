@@ -32,8 +32,9 @@ const isUniqueTags = (stringTags) => {
 
 // валидация хэштега по шаблону
 const validateHashtad = (stringRaw) => {
-  const tags = stringRaw.trim().split(' ').every(isValidHashtad);
-  return tags;
+  const tags = stringRaw.trim().split(' ').filter((tag) => tag.trim());
+  const result = tags.every(isValidHashtad);
+  return result;
 };
 
 pristine.addValidator(
