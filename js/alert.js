@@ -14,62 +14,52 @@ const closeErrorAlertButton = errorMessage.querySelector('.error__button');
 
 let statusAlert;
 
-const closeSuccessMessage = () => {
-  successMessage.remove();
-  closeSuccessAlertButton.removeEventListener('click', onClickButtonAlert);
-  successMessage.removeEventListener('click', onClickWindowAlert);
+const closeAlertMessage = (message, button) => {
+  message.remove();
+  message.removeEventListener('click', onClickWindowAlert);
+  button.removeEventListener('click', onClickButtonAlert);
   document.removeEventListener('keydown', onClickEscAlert);
 };
 
-const closeErrorMessage = () => {
-  errorMessage.remove();
-  closeErrorAlertButton.removeEventListener('click', onClickButtonAlert);
-  errorMessage.removeEventListener('click', onClickWindowAlert);
-  document.removeEventListener('keydown', onClickEscAlert);
+const renderMessage = () => {
+  if (statusAlert) {
+    closeAlertMessage(successMessage, closeSuccessAlertButton);
+  } else {
+    closeAlertMessage(errorMessage, closeErrorAlertButton);
+  }
 };
 
 function onClickButtonAlert () {
-  if (statusAlert) {
-    closeSuccessMessage();
-  } else {
-    closeErrorMessage();
-  }
+  renderMessage();
 }
 
 function onClickWindowAlert (evt) {
   if (!evt.target.closest('.success__inner') && !evt.target.closest('.error__inner')) {
-    if (statusAlert) {
-      closeSuccessMessage();
-    } else {
-      closeErrorMessage();
-    }
+    renderMessage();
   }
 }
 
 function onClickEscAlert (evt) {
   if (isEsc(evt.key)) {
-    if (statusAlert) {
-      closeSuccessMessage();
-    } else {
-      closeErrorMessage();
-    }
+    renderMessage();
   }
 }
 
+const renderAlertMessage = (message, button) => {
+  body.insertAdjacentElement('beforeend', message);
+  button.addEventListener('click', onClickButtonAlert);
+  message.addEventListener('click', onClickWindowAlert);
+  document.addEventListener('keydown', onClickEscAlert);
+};
+
 const showSuccessAlert = () => {
   statusAlert = true;
-  body.insertAdjacentElement('beforeend', successMessage);
-  closeSuccessAlertButton.addEventListener('click', onClickButtonAlert);
-  successMessage.addEventListener('click', onClickWindowAlert);
-  document.addEventListener('keydown', onClickEscAlert);
+  renderAlertMessage(successMessage, closeSuccessAlertButton);
 };
 
 const showErrorAlert = () => {
   statusAlert = false;
-  body.insertAdjacentElement('beforeend', errorMessage);
-  closeErrorAlertButton.addEventListener('click', onClickButtonAlert);
-  errorMessage.addEventListener('click', onClickWindowAlert);
-  document.addEventListener('keydown', onClickEscAlert);
+  renderAlertMessage(errorMessage, closeErrorAlertButton);
 };
 
 const showErrorDataAlert = () => {
