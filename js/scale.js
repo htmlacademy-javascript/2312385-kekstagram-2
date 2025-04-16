@@ -2,6 +2,7 @@ const SCALE_DEFAULT = 100;
 const SCALE_MIN = 25;
 const SCALE_MAX = 100;
 const SCALE_STEP = 25;
+const SCALE_COEFFICIENT = 100;
 
 const form = document.querySelector('.img-upload__form');
 const scaleControlField = form.querySelector('.scale__control--value');
@@ -22,11 +23,11 @@ const scale = (evt) => {
     }
   }
   scaleControlField.value = `${currentValue}%`;
-  photoPreview.style.transform = `scale(${currentValue / 100})`;
+  photoPreview.style.transform = `scale(${currentValue / SCALE_COEFFICIENT})`;
 };
 
 const resetScale = () => {
-  photoPreview.style.transform = `scale(${SCALE_DEFAULT / 100})`;
+  photoPreview.style.transform = `scale(${SCALE_DEFAULT / SCALE_COEFFICIENT})`;
 };
 
 scaleControlSmaller.addEventListener('click', scale);

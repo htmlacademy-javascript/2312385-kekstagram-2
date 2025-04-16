@@ -1,5 +1,5 @@
-import { isEsc } from './util';
-import { renderComments, resetCommentsCounter } from './render-comments';
+import { isEsc } from './util.js';
+import { renderComments, resetCommentsCounter } from './render-comments.js';
 
 const body = document.body;
 const bigPicture = document.querySelector('.big-picture');

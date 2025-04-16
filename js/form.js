@@ -14,14 +14,9 @@ const effectsPreview = form .querySelectorAll('.effects__preview');
 const closeFormButton = form.querySelector('.img-upload__cancel');
 const submitButton = form.querySelector('.img-upload__submit');
 
-const blockSubmitButton = () => {
-  submitButton.disabled = true;
-  submitButton.textContent = 'Публикую...';
-};
-
-const unblockSubmitButton = () => {
-  submitButton.disabled = false;
-  submitButton.textContent = 'Опубликовать';
+const blockSubmitButton = (status) => {
+  submitButton.disabled = status;
+  submitButton.textContent = (status ? 'Публикую...' : 'Опубликовать');
 };
 
 const isTextFieldFocused = () =>
@@ -66,7 +61,7 @@ const onSubmitForm = (cb) => {
   form.addEventListener('submit', (evt) => {
     evt.preventDefault();
     if (isValid()) {
-      blockSubmitButton();
+      blockSubmitButton(true);
       const data = new FormData(evt.target);
       cb(data);
     }
@@ -79,5 +74,5 @@ export {
   showModal,
   closeModal,
   onSubmitForm,
-  unblockSubmitButton
+  blockSubmitButton
 };

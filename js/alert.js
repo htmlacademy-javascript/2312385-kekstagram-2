@@ -1,4 +1,4 @@
-import { isEsc } from './util';
+import { isEsc } from './util.js';
 
 const ALERT_SHOW_TIME = 5000;
 
@@ -12,78 +12,64 @@ const errorMessage = errorMessageTemplate.cloneNode(true);
 const closeSuccessAlertButton = successMessage.querySelector('.success__button');
 const closeErrorAlertButton = errorMessage.querySelector('.error__button');
 
+let statusAlert;
+
 const closeSuccessMessage = () => {
   successMessage.remove();
-  closeSuccessAlertButton.removeEventListener('click', onClickSuccessButton);
-  successMessage.removeEventListener('click', onClickWindowSuccess);
-  document.removeEventListener('keydown', onClickEscSuccess);
+  closeSuccessAlertButton.removeEventListener('click', onClickButtonAlert);
+  successMessage.removeEventListener('click', onClickWindowAlert);
+  document.removeEventListener('keydown', onClickEscAlert);
 };
 
 const closeErrorMessage = () => {
   errorMessage.remove();
-  closeErrorAlertButton.removeEventListener('click', onClickErrorButton);
-  errorMessage.removeEventListener('click', onClickWindowError);
-  document.removeEventListener('keydown', onClickEscError);
+  closeErrorAlertButton.removeEventListener('click', onClickButtonAlert);
+  errorMessage.removeEventListener('click', onClickWindowAlert);
+  document.removeEventListener('keydown', onClickEscAlert);
 };
 
-// function onClickButton (evt) {
-//   switch(evt.target) {
-//     case evt.target.closest('.success__button'):
-//       closeSuccessMessage();
-//       break;
-//     case evt.target.closest('.error__button'):
-//       closeErrorMessage();
-//       break;
-
-//     default:
-//       break;
-//   }
-// }
-
-function onClickSuccessButton () {
-  closeSuccessMessage();
-}
-
-function onClickErrorButton () {
-  closeErrorMessage();
-}
-
-function onClickWindowSuccess (evt) {
-  if (!evt.target.closest('.success__inner')) {
+function onClickButtonAlert () {
+  if (statusAlert) {
     closeSuccessMessage();
-  }
-}
-
-function onClickWindowError (evt) {
-  if (!evt.target.closest('.success__inner')) {
+  } else {
     closeErrorMessage();
   }
 }
 
-function onClickEscSuccess (evt) {
-  if (isEsc(evt.key)) {
-    closeSuccessMessage();
+function onClickWindowAlert (evt) {
+  if (!evt.target.closest('.success__inner') && !evt.target.closest('.error__inner')) {
+    if (statusAlert) {
+      closeSuccessMessage();
+    } else {
+      closeErrorMessage();
+    }
   }
 }
 
-function onClickEscError (evt) {
+function onClickEscAlert (evt) {
   if (isEsc(evt.key)) {
-    closeErrorMessage();
+    if (statusAlert) {
+      closeSuccessMessage();
+    } else {
+      closeErrorMessage();
+    }
   }
 }
 
 const showSuccessAlert = () => {
+  statusAlert = true;
   body.insertAdjacentElement('beforeend', successMessage);
-  closeSuccessAlertButton.addEventListener('click', onClickSuccessButton);
-  successMessage.addEventListener('click', onClickWindowSuccess);
-  document.addEventListener('keydown', onClickEscSuccess);
+  closeSuccessAlertButton.addEventListener('click', onClickButtonAlert);
+  successMessage.addEventListener('click', onClickWindowAlert);
+  document.addEventListener('keydown', onClickEscAlert);
 };
 
 const showErrorAlert = () => {
+  statusAlert = false;
   body.insertAdjacentElement('beforeend', errorMessage);
-  closeErrorAlertButton.addEventListener('click', onClickErrorButton);
-  errorMessage.addEventListener('click', onClickWindowError);
-  document.addEventListener('keydown', onClickEscError);
+  closeErrorAlertButton.addEventListener('click', onClickButtonAlert);
+  errorMessage.addEventListener('click', onClickWindowAlert);
+  document.addEventListener('keydown', onClickEscAlert);
 };
 
 const showErrorDataAlert = () => {
