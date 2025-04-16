@@ -28,7 +28,6 @@ const isTextFieldFocused = () =>
   document.activeElement === hashtagField ||
   document.activeElement === descriptionField;
 
-
 const closeModal = () => {
   form.reset();
   resetEffect();
@@ -76,5 +75,9 @@ const onSubmitForm = (cb) => {
 
 form.addEventListener('change', onFormChange);
 
-
-export { showModal, closeModal, onSubmitForm, unblockSubmitButton };
+export {
+  showModal,
+  closeModal,
+  onSubmitForm,
+  unblockSubmitButton
+};
