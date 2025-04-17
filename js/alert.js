@@ -16,9 +16,10 @@ let statusAlert;
 
 const closeAlertMessage = (message, button) => {
   message.remove();
-  message.removeEventListener('click', onClickWindowAlert);
-  button.removeEventListener('click', onClickButtonAlert);
-  document.removeEventListener('keydown', onClickEscAlert);
+  message.removeEventListener('click', onWindowClick);
+  button.removeEventListener('click', onButtonClick);
+  document.removeEventListener('keydown', onEscClick);
+  body.classList.remove('modal-open');
 };
 
 const renderMessage = () => {
@@ -29,17 +30,17 @@ const renderMessage = () => {
   }
 };
 
-function onClickButtonAlert () {
+function onButtonClick () {
   renderMessage();
 }
 
-function onClickWindowAlert (evt) {
+function onWindowClick (evt) {
   if (!evt.target.closest('.success__inner') && !evt.target.closest('.error__inner')) {
     renderMessage();
   }
 }
 
-function onClickEscAlert (evt) {
+function onEscClick (evt) {
   if (isEsc(evt.key)) {
     renderMessage();
   }
@@ -47,9 +48,10 @@ function onClickEscAlert (evt) {
 
 const renderAlertMessage = (message, button) => {
   body.insertAdjacentElement('beforeend', message);
-  button.addEventListener('click', onClickButtonAlert);
-  message.addEventListener('click', onClickWindowAlert);
-  document.addEventListener('keydown', onClickEscAlert);
+  button.addEventListener('click', onButtonClick);
+  message.addEventListener('click', onWindowClick);
+  document.addEventListener('keydown', onEscClick);
+  body.classList.add('modal-open');
 };
 
 const showSuccessAlert = () => {

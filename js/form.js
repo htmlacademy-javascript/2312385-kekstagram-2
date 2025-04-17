@@ -4,15 +4,15 @@ import { onFormChange, resetEffect } from './effect.js';
 import { resetScale } from './scale.js';
 
 const body = document.body;
-const form = document.querySelector('.img-upload__form');
-const fileField = form.querySelector('.img-upload__input');
-const formModal = form.querySelector('.img-upload__overlay');
-const hashtagField = form.querySelector('.text__hashtags');
-const descriptionField = form.querySelector('.text__description');
-const photoPreview = form.querySelector('.img-upload__preview img');
-const effectsPreview = form .querySelectorAll('.effects__preview');
-const closeFormButton = form.querySelector('.img-upload__cancel');
-const submitButton = form.querySelector('.img-upload__submit');
+const formElement = document.querySelector('.img-upload__form');
+const fileField = formElement.querySelector('.img-upload__input');
+const formModal = formElement.querySelector('.img-upload__overlay');
+const hashtagField = formElement.querySelector('.text__hashtags');
+const descriptionField = formElement.querySelector('.text__description');
+const photoPreview = formElement.querySelector('.img-upload__preview img');
+const effectsPreview = formElement .querySelectorAll('.effects__preview');
+const closeFormButton = formElement.querySelector('.img-upload__cancel');
+const submitButton = formElement.querySelector('.img-upload__submit');
 
 const blockSubmitButton = (status) => {
   submitButton.disabled = status;
@@ -24,7 +24,7 @@ const isTextFieldFocused = () =>
   document.activeElement === descriptionField;
 
 const closeModal = () => {
-  form.reset();
+  formElement.reset();
   resetEffect();
   resetScale();
   resetPristine();
@@ -58,7 +58,7 @@ const showModal = () => {
 };
 
 const onSubmitForm = (cb) => {
-  form.addEventListener('submit', (evt) => {
+  formElement.addEventListener('submit', (evt) => {
     evt.preventDefault();
     if (isValid()) {
       blockSubmitButton(true);
@@ -68,7 +68,7 @@ const onSubmitForm = (cb) => {
   });
 };
 
-form.addEventListener('change', onFormChange);
+formElement.addEventListener('change', onFormChange);
 
 export {
   showModal,

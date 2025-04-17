@@ -1,7 +1,7 @@
 const SHOW_COMMENTS = 5;
 
 const commentsList = document.querySelector('.social__comments');
-const bigPictureCommentsShow = document.querySelector('.social__comment-shown-count');
+const bigPictureCommentsShown = document.querySelector('.social__comment-shown-count');
 const bigPictureCommentsCounter = document.querySelector('.social__comment-total-count');
 const bigPictureCommentsLoader = document.querySelector('.comments-loader');
 
@@ -39,7 +39,7 @@ const renderMoreComments = () => {
 
   commentsList.innerHTML = '';
   commentsList.append(fragment);
-  bigPictureCommentsShow.textContent = totalComments;
+  bigPictureCommentsShown.textContent = totalComments;
   bigPictureCommentsCounter.textContent = comments.length;
 };
 

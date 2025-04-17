@@ -1,4 +1,4 @@
-const EFFECTS = [
+const Effects = [
   {
     name: 'none',
     min: 0,
@@ -47,4 +47,4 @@ const EFFECTS = [
   },
 ];
 
-export {EFFECTS};
+export {Effects};
