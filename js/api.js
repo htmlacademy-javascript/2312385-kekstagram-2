@@ -3,7 +3,7 @@ const getData = () => fetch(
 ).then((response) => response.json());
 
 const sendData = (onSuccess, onFail, data) => fetch(
-  'https://31.javascript.htmlacademy.pro/kekstagram',
+  'https://31.javascript.htmlacademy.pro/kekstagram/',
   {
     method: 'POST',
     body: data,

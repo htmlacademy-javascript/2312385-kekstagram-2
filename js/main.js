@@ -1,8 +1,8 @@
 import { renderPhotos } from './render-photos.js';
-import { showModal, closeModal, onSubmitForm, unblockSubmitButton } from './form.js';
+import { showModal, closeModal, onFormSubmit, blockSubmitButton } from './form.js';
 import { getData, sendData } from './api.js';
 import { showSuccessAlert, showErrorAlert, showErrorDataAlert } from './alert.js';
-import { filterActive, filterPhoto, setOnFilterClick } from './filter.js';
+import { unblockFilter, filterPhoto, onFilterClick } from './filter.js';
 
 showModal();
 
@@ -15,11 +15,11 @@ const onSendError = () => {
   showErrorAlert();
 };
 
-onSubmitForm((data) => sendData(onSendSuccess, onSendError, data).finally(unblockSubmitButton));
+onFormSubmit((data) => sendData(onSendSuccess, onSendError, data).finally(() => blockSubmitButton(false)));
 
 getData()
   .then((pictures) => {
-    filterActive(pictures);
+    unblockFilter(pictures);
     renderPhotos(filterPhoto());
-    setOnFilterClick(renderPhotos);
+    onFilterClick(renderPhotos);
   }).catch(() => showErrorDataAlert());

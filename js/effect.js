@@ -1,74 +1,28 @@
+import { Effects } from './constants.js';
+
 const form = document.querySelector('.img-upload__form');
+const sliderContainerElement = form.querySelector('.effect-level');
 const sliderElement = form.querySelector('.effect-level__slider');
 const effectField = form.querySelector('.effect-level__value');
 const photoPreview = form.querySelector('.img-upload__preview img');
 
-const EFFECTS = [
-  {
-    name: 'none',
-    min: 0,
-    max: 100,
-    step: 1,
-  },
-  {
-    name: 'chrome',
-    style: 'grayscale',
-    min: 0,
-    max: 1,
-    step: 0.1,
-    unit: '',
-  },
-  {
-    name: 'sepia',
-    style: 'sepia',
-    min: 0,
-    max: 1,
-    step: 0.1,
-    unit: '',
-  },
-  {
-    name: 'marvin',
-    style: 'invert',
-    min: 0,
-    max: 100,
-    step: 1,
-    unit: '%',
-  },
-  {
-    name: 'phobos',
-    style: 'blur',
-    min: 0,
-    max: 3,
-    step: 0.1,
-    unit: 'px',
-  },
-  {
-    name: 'heat',
-    style: 'brightness',
-    min: 1,
-    max: 3,
-    step: 0.1,
-    unit: '',
-  },
-];
-
-const DEFAULT_EFFECT = EFFECTS[0];
+const DEFAULT_EFFECT = Effects[0];
 let chosenEffect = DEFAULT_EFFECT;
 
 const isDefault = () => chosenEffect === DEFAULT_EFFECT;
 
 const updateSlider = () => {
-  sliderElement.classList.remove('hidden');
+  sliderContainerElement.classList.remove('hidden');
   sliderElement.noUiSlider.updateOptions({
     range: {
       min: chosenEffect.min,
       max: chosenEffect.max,
     },
-    start: chosenEffect.min,
+    start: chosenEffect.max,
     step: chosenEffect.step,
   });
   if (isDefault()) {
-    sliderElement.classList.add('hidden');
+    sliderContainerElement.classList.add('hidden');
   }
 };
 
@@ -76,7 +30,7 @@ const onFormChange = (evt) => {
   if (!evt.target.classList.contains('effects__radio')) {
     return;
   }
-  chosenEffect = EFFECTS.find((effect) => effect.name === evt.target.value);
+  chosenEffect = Effects.find((effect) => effect.name === evt.target.value);
   updateSlider();
 };
 
@@ -105,6 +59,17 @@ noUiSlider.create(sliderElement, {
   start: DEFAULT_EFFECT.min,
   step: DEFAULT_EFFECT.step,
   connect: 'lower',
+  format: {
+    to: function (value) {
+      if (Number.isInteger(value)) {
+        return parseFloat(value).toFixed(0);
+      }
+      return parseFloat(value).toFixed(1);
+    },
+    from: function (value) {
+      return parseFloat(value);
+    }
+  }
 });
 updateSlider();
 

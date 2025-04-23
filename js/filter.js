@@ -2,44 +2,44 @@ import { debounce } from './util.js';
 
 const RANDOM_PHOTO_COUNT = 10;
 
-const filter = document.querySelector('.img-filters');
-const filterForm = filter.querySelector('.img-filters__form');
-
-let pictures = [];
-let currentFilter = '';
-
-const FILTERS = {
+const Filter = {
   DEFAULT: 'filter-default',
   RANDOM: 'filter-random',
   DISCUSSED: 'filter-discussed',
 };
 
-const randomSort = () => Math.random() - 0.5;
+const filterElement = document.querySelector('.img-filters');
+const filterForm = filterElement.querySelector('.img-filters__form');
 
-const discussedSort = (picA, picB) => picB.comments.length - picA.comments.length;
+let pictures = [];
+let currentFilter = '';
+
+const getRandomSort = () => Math.random() - 0.5;
+
+const getDiscussedSort = (picA, picB) => picB.comments.length - picA.comments.length;
 
 const filterPhoto = () => {
   switch(currentFilter) {
-    case FILTERS.RANDOM:
-      return [...pictures].sort(randomSort).slice(0, RANDOM_PHOTO_COUNT);
-    case FILTERS.DISCUSSED:
-      return [...pictures].sort(discussedSort);
+    case Filter.RANDOM:
+      return [...pictures].sort(getRandomSort).slice(0, RANDOM_PHOTO_COUNT);
+    case Filter.DISCUSSED:
+      return [...pictures].sort(getDiscussedSort);
     default:
       return [...pictures];
   }
 };
 
-const filterActive = (loaderPictures) => {
-  filter.classList.remove('img-filters--inactive');
+const unblockFilter = (loaderPictures) => {
+  filterElement.classList.remove('img-filters--inactive');
   pictures = [...loaderPictures];
-  currentFilter = FILTERS.DEFAULT;
+  currentFilter = Filter.DEFAULT;
 };
 
-const setOnFilterClick = (cb) => {
+const onFilterClick = (cb) => {
   const debounceCallback = debounce(cb);
 
   filterForm.addEventListener('click', (evt) => {
-    const currentButton = filter.querySelector('.img-filters__button--active');
+    const currentButton = filterElement.querySelector('.img-filters__button--active');
     if (!(evt.target === currentButton)) {
       currentButton.classList.remove('img-filters__button--active');
       evt.target.classList.add('img-filters__button--active');
@@ -49,4 +49,4 @@ const setOnFilterClick = (cb) => {
   });
 };
 
-export { filterActive, filterPhoto, setOnFilterClick };
+export { unblockFilter, filterPhoto, onFilterClick };
