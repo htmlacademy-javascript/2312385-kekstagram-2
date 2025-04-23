@@ -1,48 +1,41 @@
 import { isValid, resetPristine } from './validate-form.js';
-import { isEsc } from './util.js';
 import { onFormChange, resetEffect } from './effect.js';
 import { resetScale } from './scale.js';
+import { removeEscapeControl, setEscapeControl } from './escape-control.js';
 
 const body = document.body;
-const form = document.querySelector('.img-upload__form');
-const fileField = form.querySelector('.img-upload__input');
-const formModal = form.querySelector('.img-upload__overlay');
-const hashtagField = form.querySelector('.text__hashtags');
-const descriptionField = form.querySelector('.text__description');
-const photoPreview = form.querySelector('.img-upload__preview img');
-const effectsPreview = form .querySelectorAll('.effects__preview');
-const closeFormButton = form.querySelector('.img-upload__cancel');
-const submitButton = form.querySelector('.img-upload__submit');
+const formElement = document.querySelector('.img-upload__form');
+const fileField = formElement.querySelector('.img-upload__input');
+const formModal = formElement.querySelector('.img-upload__overlay');
+const hashtagField = formElement.querySelector('.text__hashtags');
+const descriptionField = formElement.querySelector('.text__description');
+const photoPreview = formElement.querySelector('.img-upload__preview img');
+const effectsPreview = formElement .querySelectorAll('.effects__preview');
+const closeFormButton = formElement.querySelector('.img-upload__cancel');
+const submitButton = formElement.querySelector('.img-upload__submit');
 
-const blockSubmitButton = () => {
-  submitButton.disabled = true;
-  submitButton.textContent = 'Публикую...';
+const blockSubmitButton = (status) => {
+  submitButton.disabled = status;
+  submitButton.textContent = (status ? 'Публикую...' : 'Опубликовать');
 };
 
-const unblockSubmitButton = () => {
-  submitButton.disabled = false;
-  submitButton.textContent = 'Опубликовать';
-};
-
-const isTextFieldFocused = () =>
-  document.activeElement === hashtagField ||
-  document.activeElement === descriptionField;
+const canCloseForm = () =>
+  !(document.activeElement === hashtagField ||
+  document.activeElement === descriptionField);
 
 const closeModal = () => {
-  form.reset();
+  formElement.reset();
   resetEffect();
   resetScale();
   resetPristine();
   body.classList.remove('modal-open');
   formModal.classList.add('hidden');
-  closeFormButton.removeEventListener('click', closeModal);
-  document.removeEventListener('keydown', onEscKeyClick);
+  closeFormButton.removeEventListener('click', onCloseButtonClick);
 };
 
-function onEscKeyClick (evt) {
-  if (isEsc(evt.key) && !isTextFieldFocused()) {
-    closeModal();
-  }
+function onCloseButtonClick () {
+  closeModal();
+  removeEscapeControl();
 }
 
 const showModal = () => {
@@ -51,8 +44,8 @@ const showModal = () => {
 
     body.classList.add('modal-open');
     formModal.classList.remove('hidden');
-    closeFormButton.addEventListener('click', closeModal);
-    document.addEventListener('keydown', onEscKeyClick);
+    closeFormButton.addEventListener('click', onCloseButtonClick);
+    setEscapeControl(closeModal, canCloseForm);
 
     photoPreview.src = URL.createObjectURL(file);
 
@@ -62,22 +55,22 @@ const showModal = () => {
   });
 };
 
-const onSubmitForm = (cb) => {
-  form.addEventListener('submit', (evt) => {
+const onFormSubmit = (cb) => {
+  formElement.addEventListener('submit', (evt) => {
     evt.preventDefault();
     if (isValid()) {
-      blockSubmitButton();
+      blockSubmitButton(true);
       const data = new FormData(evt.target);
       cb(data);
     }
   });
 };
 
-form.addEventListener('change', onFormChange);
+formElement.addEventListener('change', onFormChange);
 
 export {
   showModal,
   closeModal,
-  onSubmitForm,
-  unblockSubmitButton
+  onFormSubmit,
+  blockSubmitButton
 };

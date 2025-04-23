@@ -1,4 +1,4 @@
-import { isEsc } from './util';
+import { removeEscapeControl, setEscapeControl } from './escape-control.js';
 
 const ALERT_SHOW_TIME = 5000;
 
@@ -12,78 +12,49 @@ const errorMessage = errorMessageTemplate.cloneNode(true);
 const closeSuccessAlertButton = successMessage.querySelector('.success__button');
 const closeErrorAlertButton = errorMessage.querySelector('.error__button');
 
-const closeSuccessMessage = () => {
-  successMessage.remove();
-  closeSuccessAlertButton.removeEventListener('click', onClickSuccessButton);
-  successMessage.removeEventListener('click', onClickWindowSuccess);
-  document.removeEventListener('keydown', onClickEscSuccess);
+let statusAlert;
+
+const closeAlertMessage = (message, button) => {
+  message.remove();
+  message.removeEventListener('click', onWindowClick);
+  button.removeEventListener('click', onButtonClick);
 };
 
-const closeErrorMessage = () => {
-  errorMessage.remove();
-  closeErrorAlertButton.removeEventListener('click', onClickErrorButton);
-  errorMessage.removeEventListener('click', onClickWindowError);
-  document.removeEventListener('keydown', onClickEscError);
+const renderMessage = () => {
+  if (statusAlert) {
+    closeAlertMessage(successMessage, closeSuccessAlertButton);
+  } else {
+    closeAlertMessage(errorMessage, closeErrorAlertButton);
+  }
 };
 
-// function onClickButton (evt) {
-//   switch(evt.target) {
-//     case evt.target.closest('.success__button'):
-//       closeSuccessMessage();
-//       break;
-//     case evt.target.closest('.error__button'):
-//       closeErrorMessage();
-//       break;
-
-//     default:
-//       break;
-//   }
-// }
-
-function onClickSuccessButton () {
-  closeSuccessMessage();
+function onButtonClick () {
+  renderMessage();
+  removeEscapeControl();
 }
 
-function onClickErrorButton () {
-  closeErrorMessage();
-}
-
-function onClickWindowSuccess (evt) {
-  if (!evt.target.closest('.success__inner')) {
-    closeSuccessMessage();
+function onWindowClick (evt) {
+  if (!evt.target.closest('.success__inner') && !evt.target.closest('.error__inner')) {
+    renderMessage();
+    removeEscapeControl();
   }
 }
 
-function onClickWindowError (evt) {
-  if (!evt.target.closest('.success__inner')) {
-    closeErrorMessage();
-  }
-}
-
-function onClickEscSuccess (evt) {
-  if (isEsc(evt.key)) {
-    closeSuccessMessage();
-  }
-}
-
-function onClickEscError (evt) {
-  if (isEsc(evt.key)) {
-    closeErrorMessage();
-  }
-}
+const renderAlertMessage = (message, button) => {
+  body.insertAdjacentElement('beforeend', message);
+  button.addEventListener('click', onButtonClick);
+  message.addEventListener('click', onWindowClick);
+  setEscapeControl(() => closeAlertMessage(message, button));
+};
 
 const showSuccessAlert = () => {
-  body.insertAdjacentElement('beforeend', successMessage);
-  closeSuccessAlertButton.addEventListener('click', onClickSuccessButton);
-  successMessage.addEventListener('click', onClickWindowSuccess);
-  document.addEventListener('keydown', onClickEscSuccess);
+  statusAlert = true;
+  renderAlertMessage(successMessage, closeSuccessAlertButton);
 };
 
 const showErrorAlert = () => {
-  body.insertAdjacentElement('beforeend', errorMessage);
-  closeErrorAlertButton.addEventListener('click', onClickErrorButton);
-  errorMessage.addEventListener('click', onClickWindowError);
-  document.addEventListener('keydown', onClickEscError);
+  statusAlert = false;
+  renderAlertMessage(errorMessage, closeErrorAlertButton);
 };
 
 const showErrorDataAlert = () => {

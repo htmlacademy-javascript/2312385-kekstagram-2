@@ -2,13 +2,13 @@ const MAX_COUNT_TAGS = 5;
 const MAX_DESCRIPTION = 140;
 const MAX_LENGTH_TAG = 20;
 
-const form = document.querySelector('.img-upload__form');
-const hashtagField = form.querySelector('.text__hashtags');
-const descriptionField = form.querySelector('.text__description');
+const formElement = document.querySelector('.img-upload__form');
+const hashtagField = formElement.querySelector('.text__hashtags');
+const descriptionField = formElement.querySelector('.text__description');
 
 const regexp = /^#[a-zа-яё0-9]{1,19}$/i;
 
-const pristine = new Pristine(form, {
+const pristine = new Pristine(formElement, {
   classTo: 'img-upload__field-wrapper',
   errorTextParent: 'img-upload__field-wrapper',
   errorTextClass: '.img-upload__field-wrapper--error'
@@ -19,21 +19,22 @@ const isValidHashtad = (tag) => regexp.test(tag);
 
 // проверка тегов на количество
 const isValidCountHashtag = (stringTags) => {
-  const tags = stringTags.trim().split(' ');
+  const tags = stringTags.trim().split(' ').filter((tag) => tag.trim());
   return tags.length <= MAX_COUNT_TAGS;
 };
 
 // проверка тегов на уникальность
 const isUniqueTags = (stringTags) => {
-  const tags = stringTags.trim().toLowerCase().split(' ');
+  const tags = stringTags.trim().toLowerCase().split(' ').filter((tag) => tag.trim());
   const uniqueTags = [...new Set(tags)];
   return tags.length === uniqueTags.length;
 };
 
 // валидация хэштега по шаблону
 const validateHashtad = (stringRaw) => {
-  const tags = stringRaw.trim().split(' ').every(isValidHashtad);
-  return tags;
+  const tags = stringRaw.trim().split(' ').filter((tag) => tag.trim());
+  const result = tags.every(isValidHashtad);
+  return result;
 };
 
 pristine.addValidator(
