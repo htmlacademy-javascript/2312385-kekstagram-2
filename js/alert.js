@@ -1,4 +1,4 @@
-import { isEsc } from './util.js';
+import { removeEscapeControl, setEscapeControl } from './escape-control.js';
 
 const ALERT_SHOW_TIME = 5000;
 
@@ -18,8 +18,6 @@ const closeAlertMessage = (message, button) => {
   message.remove();
   message.removeEventListener('click', onWindowClick);
   button.removeEventListener('click', onButtonClick);
-  document.removeEventListener('keydown', onEscClick);
-  body.classList.remove('modal-open');
 };
 
 const renderMessage = () => {
@@ -32,17 +30,13 @@ const renderMessage = () => {
 
 function onButtonClick () {
   renderMessage();
+  removeEscapeControl();
 }
 
 function onWindowClick (evt) {
   if (!evt.target.closest('.success__inner') && !evt.target.closest('.error__inner')) {
     renderMessage();
-  }
-}
-
-function onEscClick (evt) {
-  if (isEsc(evt.key)) {
-    renderMessage();
+    removeEscapeControl();
   }
 }
 
@@ -50,8 +44,7 @@ const renderAlertMessage = (message, button) => {
   body.insertAdjacentElement('beforeend', message);
   button.addEventListener('click', onButtonClick);
   message.addEventListener('click', onWindowClick);
-  document.addEventListener('keydown', onEscClick);
-  body.classList.add('modal-open');
+  setEscapeControl(() => closeAlertMessage(message, button));
 };
 
 const showSuccessAlert = () => {

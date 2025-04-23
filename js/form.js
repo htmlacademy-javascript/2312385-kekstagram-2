@@ -1,7 +1,7 @@
 import { isValid, resetPristine } from './validate-form.js';
-import { isEsc } from './util.js';
 import { onFormChange, resetEffect } from './effect.js';
 import { resetScale } from './scale.js';
+import { removeEscapeControl, setEscapeControl } from './escape-control.js';
 
 const body = document.body;
 const formElement = document.querySelector('.img-upload__form');
@@ -19,9 +19,9 @@ const blockSubmitButton = (status) => {
   submitButton.textContent = (status ? 'Публикую...' : 'Опубликовать');
 };
 
-const isTextFieldFocused = () =>
-  document.activeElement === hashtagField ||
-  document.activeElement === descriptionField;
+const canCloseForm = () =>
+  !(document.activeElement === hashtagField ||
+  document.activeElement === descriptionField);
 
 const closeModal = () => {
   formElement.reset();
@@ -30,14 +30,12 @@ const closeModal = () => {
   resetPristine();
   body.classList.remove('modal-open');
   formModal.classList.add('hidden');
-  closeFormButton.removeEventListener('click', closeModal);
-  document.removeEventListener('keydown', onEscKeyClick);
+  closeFormButton.removeEventListener('click', onCloseButtonClick);
 };
 
-function onEscKeyClick (evt) {
-  if (isEsc(evt.key) && !isTextFieldFocused()) {
-    closeModal();
-  }
+function onCloseButtonClick () {
+  closeModal();
+  removeEscapeControl();
 }
 
 const showModal = () => {
@@ -46,8 +44,8 @@ const showModal = () => {
 
     body.classList.add('modal-open');
     formModal.classList.remove('hidden');
-    closeFormButton.addEventListener('click', closeModal);
-    document.addEventListener('keydown', onEscKeyClick);
+    closeFormButton.addEventListener('click', onCloseButtonClick);
+    setEscapeControl(closeModal, canCloseForm);
 
     photoPreview.src = URL.createObjectURL(file);
 
@@ -57,7 +55,7 @@ const showModal = () => {
   });
 };
 
-const onSubmitForm = (cb) => {
+const onFormSubmit = (cb) => {
   formElement.addEventListener('submit', (evt) => {
     evt.preventDefault();
     if (isValid()) {
@@ -73,6 +71,6 @@ formElement.addEventListener('change', onFormChange);
 export {
   showModal,
   closeModal,
-  onSubmitForm,
+  onFormSubmit,
   blockSubmitButton
 };

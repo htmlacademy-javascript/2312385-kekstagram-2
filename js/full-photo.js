@@ -1,4 +1,4 @@
-import { isEsc } from './util.js';
+import { removeEscapeControl, setEscapeControl } from './escape-control.js';
 import { renderComments, resetCommentsCounter } from './render-comments.js';
 
 const body = document.body;
@@ -18,27 +18,21 @@ const renderData = (picture) => {
 const closeFullPicture = () => {
   body.classList.remove('modal-open');
   bigPictureElement.classList.add('hidden');
-  document.removeEventListener('keydown', onEscKeyClick);
   resetCommentsCounter();
 };
 
-const onButtonCloseFullPicture = () => {
+const onCloseButtonClick = () => {
   closeFullPicture();
+  removeEscapeControl();
 };
-
-function onEscKeyClick (evt) {
-  if (isEsc(evt.key)) {
-    closeFullPicture();
-  }
-}
 
 const openFullPicture = (picture) => {
   body.classList.add('modal-open');
   bigPictureElement.classList.remove('hidden');
   renderData(picture);
-  document.addEventListener('keydown', onEscKeyClick);
+  setEscapeControl(closeFullPicture);
 };
 
-closeButton.addEventListener('click', onButtonCloseFullPicture);
+closeButton.addEventListener('click', onCloseButtonClick);
 
 export {openFullPicture};
