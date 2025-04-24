@@ -10,7 +10,7 @@ const scaleControlSmaller = formElement.querySelector('.scale__control--smaller'
 const scaleControlBigger = formElement.querySelector('.scale__control--bigger');
 const photoPreview = formElement.querySelector('.img-upload__preview img');
 
-const scale = (evt) => {
+const onScaleButtonClick = (evt) => {
   const controlSmaller = evt.target.closest('.scale__control--smaller');
   let currentValue = parseInt(scaleControlField.value, 10);
   if (controlSmaller) {
@@ -30,7 +30,7 @@ const resetScale = () => {
   photoPreview.style.transform = `scale(${SCALE_DEFAULT / SCALE_COEFFICIENT})`;
 };
 
-scaleControlSmaller.addEventListener('click', scale);
-scaleControlBigger.addEventListener('click', scale);
+scaleControlSmaller.addEventListener('click', onScaleButtonClick);
+scaleControlBigger.addEventListener('click', onScaleButtonClick);
 
 export {resetScale};
