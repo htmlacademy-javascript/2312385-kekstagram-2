@@ -1,6 +1,3 @@
-const PHOTO_COUNT = 25;
-const COMMENTS_COUNT = 30;
-
 const isEsc = (key) => key === 'Escape';
 
 const debounce = (cb, delay = 500) => {
@@ -12,8 +9,6 @@ const debounce = (cb, delay = 500) => {
 };
 
 export {
-  PHOTO_COUNT,
-  COMMENTS_COUNT,
   isEsc,
   debounce,
 };

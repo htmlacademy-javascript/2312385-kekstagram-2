@@ -1,12 +1,13 @@
 import { Effects } from './constants.js';
 
+const DEFAULT_EFFECT = Effects[0];
+
 const form = document.querySelector('.img-upload__form');
 const sliderContainerElement = form.querySelector('.effect-level');
 const sliderElement = form.querySelector('.effect-level__slider');
 const effectField = form.querySelector('.effect-level__value');
 const photoPreview = form.querySelector('.img-upload__preview img');
 
-const DEFAULT_EFFECT = Effects[0];
 let chosenEffect = DEFAULT_EFFECT;
 
 const isDefault = () => chosenEffect === DEFAULT_EFFECT;

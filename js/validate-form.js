@@ -1,12 +1,11 @@
 const MAX_COUNT_TAGS = 5;
 const MAX_DESCRIPTION = 140;
 const MAX_LENGTH_TAG = 20;
+const REGEXP = /^#[a-zа-яё0-9]{1,19}$/i;
 
 const formElement = document.querySelector('.img-upload__form');
 const hashtagField = formElement.querySelector('.text__hashtags');
 const descriptionField = formElement.querySelector('.text__description');
-
-const regexp = /^#[a-zа-яё0-9]{1,19}$/i;
 
 const pristine = new Pristine(formElement, {
   classTo: 'img-upload__field-wrapper',
@@ -15,7 +14,7 @@ const pristine = new Pristine(formElement, {
 });
 
 // проверка тегов на шаблон
-const isValidHashtad = (tag) => regexp.test(tag);
+const isValidHashtad = (tag) => REGEXP.test(tag);
 
 // проверка тегов на количество
 const isValidCountHashtag = (stringTags) => {
